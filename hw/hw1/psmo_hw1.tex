@@ -1,0 +1,562 @@
+\documentclass[10pt, a4paper]{extarticle}
+
+%% Язык
+\usepackage{cmap} % Поиск в PDF
+\usepackage{mathtext} % Кириллица в формулах
+\usepackage[T2A]{fontenc} % Кодировка
+\usepackage[utf8]{inputenc} % Кодировка
+\usepackage[english,russian]{babel} % Локализация, переносы
+
+%% Шрифты
+
+% Serif
+%\usepackage{euscript} % Шрифт Евклид
+%\usepackage{mathrsfs} % Шрифт для математики
+\usepackage{libertinus}
+
+% Sans-serif
+%\renewcommand{\rmdefault}{cmss}
+%\renewcommand{\ttdefault}{cmss}
+%\usepackage{sfmath}
+
+% Настройки для xelatex
+%\usepackage{polyglossia} % Для выбора языка в xelatex
+%\setmainlanguage{russian}
+%\setotherlanguages{english}
+% Ligatures=TeX is on by default
+% https://tex.stackexchange.com/questions/323542/
+%\setmainfont[Ligatures=TeX]{Cantarell}
+%\newfontfamily{\cyrillicfonttt}{Times New Roman}
+%\newfontfamily\cyrillicfont{Cantarell}[Script=Cyrillic]
+%\setsansfont[Ligatures=TeX]{Cantarell}
+%\newfontfamily\cyrillicfontsf{Cantarell}[Script=Cyrillic]
+%\setmonofont{Courier New}
+%\newfontfamily\cyrillicfonttt{Courier New}[Script=Cyrillic]
+
+%% Математика
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
+\usepackage{icomma}
+
+% Операторы
+\DeclareMathOperator*\plim{plim}
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\amn}{arg\,min}
+\DeclareMathOperator*{\amx}{arg\,max}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\pCorr}{pCorr}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\let\P\relax
+\DeclareMathOperator{\P}{\mathbb{P}}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+% Распределения
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cBinom}{\mathcal{Binom}}
+\newcommand{\cPois}{\mathcal{Pois}}
+\newcommand{\cBeta}{\mathcal{Beta}}
+\newcommand{\cGamma}{\mathcal{Gamma}}
+
+% Множества
+\def \R{\mathbb{R}}
+\def \N{\mathbb{N}}
+\def \Z{\mathbb{Z}}
+
+% Другое
+\newcommand{\dx}[1]{\,\mathrm{d}#1} % Для интеграла: маленький отступ и прямая d
+\newcommand{\ind}[1]{\mathbbm{1}_{\{#1\}}} % Индикатор события
+\newcommand{\iid}{\mathrel{\stackrel{\rm i.\,i.\,d.}\sim}}
+\newcommand{\const}{\mathrm{const}}
+
+%% Изображения
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage{wrapfig} % Обтекание рисунков и таблиц текстом
+\usepackage{tikz}
+
+%% Таблицы
+\usepackage{array, tabularx, tabulary, booktabs}
+\usepackage{longtable}  % Длинные таблицы
+\usepackage{multirow} % Слияние строк в таблице
+
+%% Cписки
+\usepackage{multicol}
+%\usepackage{enumitem}
+
+%% Гиперссылки
+\usepackage{xcolor}
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{8b00ff}
+\hypersetup{colorlinks = true,
+			linkcolor = linkcolor,
+			urlcolor = linkcolor,
+			citecolor = linkcolor}
+
+%% Выравнивание
+\setlength{\parskip}{0.5em} % Расстояние между абзацами
+\usepackage{geometry} % Поля
+\geometry{
+	a4paper,
+	left=20mm,
+	top=20mm,
+	right=20mm}
+\setlength{\parindent}{0cm} % Отступ (красная строка)
+\linespread{1.0} % Интерлиньяж
+\usepackage[many]{tcolorbox}  
+
+%% Оформление
+
+\newtcolorbox{rulesbox}[1]{%
+	tikznode boxed title,
+	enhanced,
+	arc=0mm,
+	interior style={white},
+	attach boxed title to top center= {yshift=-\tcboxedtitleheight/2},
+	fonttitle=\bfseries,
+	colbacktitle=white,coltitle=black,
+	boxed title style={size=normal,colframe=white,boxrule=0pt},
+	title={#1}}
+
+% Красивый серый фон
+\usepackage{framed} 
+\definecolor{shadecolor}{gray}{0.9}
+
+% Код
+\newcommand{\code}[1]{{\tt #1}}
+
+% Колонтитулы
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{}
+\fancyhead[R]{\thepage}
+
+% Разделы и подразделы
+\usepackage[sf, sl, outermarks]{titlesec}
+\titleformat{\section}{\Large\bfseries\sffamily}{\thesection}{0.5em}{}
+\titleformat{\subsection}{\large\sffamily}{\thesubsection}{0.5em}{}
+
+% Содержание
+%\usepackage{tocloft}
+%\renewcommand{\cftsecfont}{\hspace{4.5em}\normalfont}
+%\renewcommand{\cftsubsecfont}{\hspace{5em}\normalfont}
+%\renewcommand{\cftsecpagefont}{\normalfont\hfill}
+%\renewcommand{\cfttoctitlefont}{\large\normalfont\hfill}
+%\renewcommand{\cftaftertoctitle}{\hfill}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+%\renewcommand{\cftsecafterpnum}{\hspace*{5.5em}\hfill}
+%\renewcommand{\cftsubsecafterpnum}{\hspace*{5.5em}\hfill}
+%\renewcommand{\cftsecaftersnum}{.}
+%\renewcommand{\cftsubsecaftersnum}{.}
+
+%% Комментарии
+\usepackage{comment}
+
+%% To-do
+\usepackage{todonotes}
+
+%% Литература
+\usepackage[backend = biber,
+			bibencoding = utf8, 
+			sorting = nty, 
+			maxcitenames = 4,
+			style = numeric-verb]{biblatex}
+\addbibresource{lit.bib}
+\usepackage{csquotes}
+
+%% Заголовок
+\title{\vspace{-2em}{\normalsize Прикладная статистика в машинном обучении} \\\vspace{0.5em} Домашнее задание \#1 \vspace{0.2em}\\ \Large Часть 1}
+\author{Дедлайн: 29 октября, 23:59 МСК}
+\date{\rule{15cm}{0.4pt}}
+
+
+\begin{document}
+	
+	\maketitle
+	
+	\vspace{-2em}
+	\begin{rulesbox}{Правила игры}
+		\begin{enumerate}
+			\item Домашнее задание состоит из двух частей. Часть 1 содержит 13 обязательных и две бонусных задачи и предполагает решение «от руки». Часть 2 содержит 3 обязательных задачи и предполагает программное решение.
+			\item Домашнее задание оценивается в $80$ баллов. При этом часть 1 оценивается в $65$ баллов, а часть 2 – в $15$ баллов. По умолчанию за каждый пункт каждой задачи можно получить $1$ балл. Однако за некоторые пункты некоторых задач можно получить другое количество баллов, которое явно указано в скобках рядом с меткой пункта.
+			\item Каждый пункт оценивается с промежутком $0.5$. Например, если за пункт можно получить максимум $1$ балл, то за полностью корректное решение ставится $1$ балл, за решение с небольшими ошибками ставится $0.5$ балла, за решение с серьёзными ошибками или неправильное решение ставится $0$ баллов. Для пунктов, за которые можно получить максимум $2$ балла, в зависимости от решения можно получить $2$, $1.5$, $1$ и т.д. баллов. При этом пункты проверяются независимо друг от друга: если пункт $t+1$ зависит от численных результатов пункта $t$, и в пункте $t$ допускается ошибка, из-за которой в пункт $t+1$ приходят неверные входные данные, то при корректном решении пункт $t+1$ оценивается в максимальное количество баллов, которое можно за него получить.
+			\item Бонусные задачи $X$ и $Y$ приведены в конце части 1 и обозначены значком $\dagger$. Эти задачи необязательны к решению и учитываются сверх установленных $80$ баллов. Баллы за корректно решённые бонусные задачи прибавляются к набранным баллам, даже если в сумме получается больше $80$ баллов (оценка за домашнюю работу в этом случае будет больше 10, и так и будет внесена в таблицу с оценками).
+			\item Весь код должен быть написан на Python, R, C или C++.
+			\item Решения принимаются до \textbf{29 октября 2021 года, 23:59 МСК} включительно.
+			Работы, отправленные после дедлайна, проверяются, но \textbf{не оцениваются}.
+			\item Все решения нужно загрузить в личный репозиторий на \href{https://classroom.github.com/a/KZaAKjaA}{GitHub Classroom}.
+			\item Репозиторий должен содержать: PDF-файл с решениями задач части 1 и файл с кодом с решениями задач части 2. Решение задач части 1 можно набрать в любом электронном редакторе или написать от руки, а затем сделать качественный скан. Все решения должны быть расположены в правильном порядке в одном файле. Файлы должны быть названы по типу «name\_surname\_group\_hw1\_part1.pdf» и «name\_surname\_group\_hw1\_part2.ext», где вместо ext может быть .py, .ipynb, .R, .c, .cpp. Если решение части 2 разбивается на несколько файлов кода, то в репозиторий нужно загрузить все файлы, а в README.md подробно указать, что содержит каждый файл. 
+			\item Разрешается использовать без доказательства любые результаты, встречавшиеся на лекциях или семинарах по курсу, если получение этих результатов не является вопросом задания. Разрешается использовать любые свободные источники с указанием ссылки на них.
+			\item Плагиат не допускается.
+			 При обнаружении случаев списывания, $0$ за работу выставляется всем участникам нарушения, даже если можно установить, кто у кого списал. 
+		\end{enumerate}
+	\end{rulesbox}
+	
+	\newpage
+	
+	\renewcommand{\labelenumi}{\textbf{[\asbuk{enumi}]}}
+	
+	{\Large \textbf{Задача 1.} Просто компания}
+	
+	Компания «Напиши-ка» производит три вида ручек: синие, красные и зелёные. Глава аналитического отдела компании Данил хочет понять, какая из ручек скорее всего «выстрелит», а какая не будет пользоваться успехом у покупателей. Для этого он анализирует выборку в 300 проданных ручек. Оказалось, что из них 150 синих, 100 красных и 50 зелёных ручек. Данил уверен, что ручки продаются независимо друг от друга, и вероятность того, что будет продана синяя ручка, равна $p_1$, а что красная $p_2$.
+	
+	\begin{enumerate}
+		\item Обозначим $p = \begin{pmatrix}
+			p_1 \\
+			p_2
+		\end{pmatrix}$. Найдите $\hat{p}_{ML}$ интуитивно, не выписывая правдоподобие, и поясните, как вы это сделали.
+		\item Выпишите функцию правдоподобия и найдите $\hat{p}_{ML}$ как точку её глобального максимума.
+		\item Проверьте гипотезу
+		\[\begin{cases}
+			H_0: p_1 = 0.2, \\
+			H_A: p_1 \ne 0.2
+		\end{cases}
+		\] 
+		
+		на уровне значимости $5\%$ при помощи тестов $LR$ и $LM$.
+		\item Проверьте гипотезу
+		
+		\[
+		\begin{cases}
+			H_0: \begin{pmatrix}
+				p_1 \\
+				p_2
+			\end{pmatrix} = \begin{pmatrix}
+				0.3 \\
+				0.2
+			\end{pmatrix},\\\\
+		H_A: \begin{pmatrix}
+			p_1 \\
+			p_2
+		\end{pmatrix} \ne \begin{pmatrix}
+			0.3 \\
+			0.2
+		\end{pmatrix}
+		\end{cases}
+		\]
+		
+		на уровне значимости $5\%$ при помощи тестов $LR$ и $W$.
+		\item Постройте график логарифма правдоподобия в трёхмерной плоскости. Покажите на графике $\hat{p}_{ML}$ визуальную интерпретацию тестов $LR$ и $W$ для гипотезы из предыдущего пункта.
+		\item Постройте $95\%$-ый доверительный интервал для $p_3$.
+		\item Постройте $99\%$-ый доверительный интервал для $p_1 + p_2$.
+		\item Постройте $90\%$-ый доверительный интервал для $\hat{p}_1$.
+		
+		\textit{Подсказка:} помните, что мы работаем в рамках частотного подхода.
+		
+		\item Приведите разумное интерпретируемое определение того, что ручка «выстрелила».
+		
+		\item Пользуясь определением из предыдущего пункта, сформулируйте гипотезу о том, что «выстрелит» ручка синего цвета и проверьте её при помощи любого из тестов $LR$, $LM$ или $W$ на уровне значимости $5\%$.
+	\end{enumerate}
+
+	{\Large \textbf{Задача 2.} Анекдоточная}
+	
+	 Станислав знает, что хороший анекдот должен быть не очень коротким, но и не слишком длинным. Время, за которое Станислав произносит один анекдот, – это непрерывная случайная величина с плотностью
+	 \[
+	 f(x | b) = \begin{cases}
+	 	\frac{1}{b}(x + 3)e^{-\frac{x^2}{b}}, &\text{ если } x > 0, \\
+	 	0, &\text{ иначе,}
+	 \end{cases}
+	 \]
+	 где $b$ – некоторый параметр. Станислав собрал случайную выборку по продолжительности рассказанных им анекдотов: $X_1$, $X_2$, $\ldots$, $X_n$, где $n = 10^6$. Оказалось, что $\bar{(X^2)} = 20$.
+	 
+	 \begin{enumerate}
+	 	\item Найдите $\hat{b}_{ML}$.
+	 	\item Проверьте гипотезу
+	 	\[\begin{cases}
+	 		H_0: b = 3, \\
+	 		H_A: b \ne 3
+	 	\end{cases}
+	 	\]
+	 	на уровне значимости $5\%$ при помощи теста $LR$.
+	 	\item Рассчитайте $LM$-статистику для проверки гипотезы
+	 	\[\begin{cases}
+	 		H_0: b = 1, \\
+	 		H_A: b \ne 1
+	 	\end{cases}
+	 	\]
+	 	Чему приблизительно равно соответствующее $p$-value?
+	 	\item Проверьте гипотезу из предыдущего пункта, построив соответствующий доверительный интервал для $b$.
+	 \end{enumerate}
+
+	{\Large \textbf{Задача 3.} «Я не дерево. Я энт».}
+	
+	Исследователь Матвей подбрасывает монетку с вероятностью орла $p$ до тех пор, пока не выпадет два орла (всего, не обязательно подряд). Он сыграл четыре игры, и оказалось, что первая завершилась за 3 хода, вторая – за 3 хода, третья – за 2 хода, четвёртая – за 4 хода. Будем считать, что подбрасывания в течение одной игры независимы. Также предположим, что игры происходили независимо друг от друга.
+	
+	\begin{enumerate}
+		\item \textbf{(2 балла)} Найдите $\hat{p}_{ML}$.
+		\item Найдите $\hat{a}_{ML}$ для нового параметра $a = (p^2 + 3p^3 - 1)$.
+		\item \textbf{(2 балла)} Покажите, что $\hat{p}$ является состоятельной оценкой $p$.
+		
+		\textit{Подсказка:} для решения \textbf{Задачи X} потребуется доказать, что если $M$ – число ходов, за которое завершится игра, то $\E(M) = \frac{2}{p}$. В этой задаче можно пользоваться этим утверждением без доказательства.
+	\end{enumerate}
+
+	{\Large \textbf{Задача 4.} Полезное утверждение}
+	
+	Гарри никак не может понять, почему при большой информации Фишера оценки максимального правдоподобия лежат к истинному параметру ближе, чем при малой информации Фишера.
+	Гермиона решает продемонстрировать аналитическую интуицию, стоящую за этим утверждением:
+	
+	«Если взять выборку независимых одинаково распределённых случайных величин $Y_1$, $\ldots$, $Y_N$, каждая из которых имеет функцию плотности или функцию вероятности $f(y | \theta)$, и предположить, что выполнены все необходимые условия регулярности, то при $\phi \to \theta$:
+	\begin{align*}
+	D_{KL}\left[f(y | \theta) \| f(y | \phi)\right] = \dfrac{1}{2} I_f(\theta)(\phi - \theta)^2 + O((\phi - \theta)^3)\text{»}.
+	\end{align*}
+	
+	\begin{enumerate}
+		\item \textbf{(2 балла)} Докажите утверждение Гермионы либо для случая функций плотности, либо для случая функций вероятности.
+		\item \textbf{(2 балла)} Поясните Гарри, почему при большей информации Фишера ML-оценки лежат ближе к истинному параметру. 
+	\end{enumerate}
+
+	\textit{Подсказка:} $H(f) = -\E(\ln f)$, аналогично для кросс-энтропии.
+	
+	\begin{flushright}
+		\textit{\small (По мотивам: Williams, Weighing the Odds)}
+	\end{flushright}
+
+	
+	{\Large \textbf{Задача 5.} Модель для зелий}
+	
+	Полумна хочет построить предсказательную модель, которая бы описывала зависимость популярности зелья $y_i$ от силы его положительного влияния $x_i$.
+	Обе величины являются количественными непрерывными переменными на $\R$.
+	Предположим, что Полумна знает, как измерить популярность и силу влияния и верит, что искомая зависимость имеет следующий вид:
+	\[
+	y_i = (\beta_1)^2 e^{-\beta_2 x_i}u_i,
+	\]
+	где $\beta_1$ и $\beta_2$ -- неизвестные положительные коэффициенты, $u_i $ -- случайная ошибка, причём $\ln u_i \sim \mathcal{N}(0, 2)$.
+	
+	\begin{enumerate}
+		\item \textbf{(2 балла)} Введите любые разумные ограничения на переменные. Найдите $\hat{\beta}_1$ и $\hat{\beta}_2$ методом максимального правдоподобия.
+		\item  \textbf{(2 балла)} Полумна собрала выборку, для которой оказалось, что 
+		\[
+		\sum_{i=1}^n y_i = 100, \text{ } \sum_{i = 1}^n x_i = 50,\text{ } \sum_{i = 1}^n x_iy_i = 200,
+		\]
+		\[
+		\sum_{i = 1}^n x^2_i = 2500, \text{ } \sum_{i = 1}^n y^2_i = 10000, \text{ } \sum_{i=1}^ne^{-\hat{\beta}_2x_i} = 1,
+		\]
+		\[
+		n = 500.
+		\]
+		Проверьте гипотезу
+		\[
+		\begin{cases}
+		H_0: \begin{pmatrix}
+			\beta_1 \\
+			\beta_2 \\
+		\end{pmatrix} = 
+		\begin{pmatrix}
+			1 \\
+			2 \\
+		\end{pmatrix}, \\\\
+		 H_A: \begin{pmatrix}
+			\beta_1 \\
+			\beta_2 \\
+		\end{pmatrix} \ne
+		\begin{pmatrix}
+			1 \\
+			2 \\
+		\end{pmatrix}
+		\end{cases}
+		\]
+		на уровне значимости $5\%$ при помощи теста $W$.
+		
+		\textit{Подсказка:} $\ln Y \sim N(\mu, \sigma^2)$ $\Rightarrow$ $\E(Y) = e^{\mu + \frac{\sigma^2}{2}}$.
+	\end{enumerate}
+
+	{\Large \textbf{Задача 6.} Функции правдоподобия}
+	
+	Пусть $X_1$, $\ldots$, $X_n$ – выборка независимых одинаково распределённых величин из распределения с параметром $p \in [0, 1]$. Известно, что $n = 100$, $\bar{X} = 20$, $\bar{(X^2)} = 400$. Найдите $\hat{p}_{ML}$ для следующих функций (можно либо вывести в явном виде, либо использовать математический анализ):
+	\begin{enumerate}
+		\item 
+		\[
+		\ell(p) = \dfrac{\sqrt{X_1 + \ldots + X_n}}{50 - p} + \dfrac{\ln p}{X_1^2 + \ldots + X_n^2}.
+		\]
+		\item \[
+		\ell(p) = \dfrac{(p^2 - \ln p)\bar{X^2}}{\bar{X}}.
+		\]
+	\end{enumerate}
+
+	{\Large \textbf{Задача 7.} Дивергент}
+	
+	Рассмотрим распределения $p = \mathcal{N}(1, 2)$, $q = \mathrm{Exp}(1)$, $r = \mathrm{Bin}(3, 0.5)$. Для каждого пункта приведите математическое обоснование ответа.
+	
+	\begin{enumerate}
+		\item Найдите $D_{KL}(p \| q)$.
+		\item Найдите $D_{KL}(q \| p)$.
+		\item Найдите $D_{KL}(p \| r)$.
+		\item Найдите $D_{KL}(q \| r)$.
+		\item Возможно ли применить линейное преобразование к $p$, $q$ или $r$ так, чтобы ответ на хотя бы один из пунктов выше изменился? 
+	\end{enumerate}
+
+	{\Large \textbf{Задача 8.} Между молотом и наковальней}
+	
+	Одной из симметричных альтернатив $KL$-дивергенции является \textit{взаимная информация}: для случайных величин $X$ и $Y$ она определяется как
+	\[
+	I(X, Y) = H(X) - H(X | Y), 
+	\] 
+	где $H(X | Y) = - \int p(x, y) \ln \dfrac{p(x, y)}{p(y)}$.
+	
+	\begin{enumerate}
+		\item Покажите, что $I(X, Y) = I(Y, X)$.
+		\item \textbf{(2 балла)} Покажите, что $I(X, Y) = D_{KL}(p(x, y) \| p(x) \times p(y))$.
+		\item Поясните интуитивную интерпретацию $I(X, Y)$.
+	\end{enumerate}
+
+	{\Large \textbf{Задача 9.} Хорошая задача на экзамен}
+	
+	Случайная величина $X$ принимает значение $0$ с вероятностью $p$, значение $1$ с вероятностью $1/3$ и значение $2$ с вероятностью $2/3 - p$. 
+	
+	\begin{enumerate}
+		\item Постройте график зависимости $H(X)$ как функцию от $p$.
+		\item При каком $p$ энтропия будет максимальна? Поясните полученный результат. 
+	\end{enumerate}
+
+	{\Large \textbf{Задача 10.} Порисуем!}
+	
+	Рассмотрим модель множественной регрессии $y = X\beta + u$, которая оценивается при помощи МНК. Число наблюдений равно $n = 400$, число регрессоров равно $k = 10$, включая константный. Все регрессоры ортогональны друг другу.
+	
+	\begin{enumerate}
+		\item Долорес Амбридж строит регрессию по константному и следующим за ним четырём регрессорам. Корнелиус Фадж строит регрессию по константному и оставшимся пяти регрессорам. Покажите на \textit{единой} картинке МНК $\hat{y}$, $TSS$, $ESS$, $RSS$ и $R^2$ в их регрессиях.
+		\item Альбус Дамблдор строит регрессию по всем 10 регрессорам. Покажите на той же картинке МНК $\hat{y}$, $TSS$, $ESS$, $RSS$ и $R^2$ в его регрессии.
+		\item \textbf{(2 балла)} Гарри Поттер хочет сравнить регрессии Амбридж и Дамблдора при помощи $F$-теста. Напомним, что 
+		\[
+		F = \dfrac{(RSS_R - RSS_{UR}) / (k_{UR} - k_R)}{RSS_{UR} / (n - k_{UR})}.
+		\]
+		Покажите на картинке МНК $RSS_R$, $RSS_{UR}$ и угол, квадрату тангенса которого пропорциональна $F$-статистика.
+		\item Приведите геометрическую интерпретацию $F$-теста. 
+	\end{enumerate}
+
+	{\Large \textbf{Задача 11.} Подпространства}
+	
+	Рассмотрим пространство $\R^3$ и два подпространства в нём
+	\[
+	W = \{(x_1, x_2, x_3) | 3x_1 + 2x_2 - x_3 = 0\}
+	\]
+	и
+	\[
+	V = \mathrm{Lin}[(1, 1, 1)^T].
+	\]
+	
+	\begin{enumerate}
+		\item Найдите $\dim V$, $\dim W$, $\dim (V \cap W)$, $\dim V^{\perp}$, $\dim W^{\perp}$.
+		\item Найдите проекцию произвольного вектора $u$ на $V$, $W$, $V \cap W$, $V^{\perp}$, $W^{\perp}$. Найдите квадрат длины каждой проекции.
+		\item Как распределён квадрат длины проекции в каждом случае, если дополнительно известно, что вектор $u$ имеет многомерное стандартное нормальное распределение?
+	\end{enumerate}
+	
+	{\Large \textbf{Задача 12.} Парная регрессия}
+	
+	Исследователь Борис работает с обычной парной регрессией
+	\[
+	y_i = \beta_0 + \beta_1 X_i + u_i,
+	\]
+	которую он оценивает при помощи МНК:
+	\[
+	\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i .
+	\]
+	
+	\begin{enumerate}
+		\item Просто для удобства выпишите $RSS$ в этой регрессии и условия первого порядка в задаче минимизации. 
+		\item Докажите, что $\sum_{i = 1}^{n} (y_i - \hat{y}_i) = 0$.
+		\item Докажите, что $\bar{y} = \bar{\hat{y}}$.
+		\item Докажите, что точка $(\bar{x}, \bar{y})$ лежит на линии оценённой регрессии.
+		\item Докажите, что $\sum_{i = 1}^n x_i(y_i -\hat{y}_i) = 0$.
+	\end{enumerate}
+
+	{\Large \textbf{Задача 13.} Гипотезы в линейной регрессии}
+	
+	Линейная регрессионная модель задаётся в следующем виде:
+	\[
+	y_i = \beta_0 + \beta_1x_{1, i} + \beta_2x_{2, i} + u_i.
+	\] 
+	Предположим, что $u \sim \mathcal{N}(0, \sigma^2I)$. Известно, что
+	\[
+	X = \begin{pmatrix}
+		1 & 1 & 3.1 \\
+		1 & 12 & 2.2 \\
+		1 & -3 & 0.1 \\
+		1 & 2 & 0.5 \\
+		1 & 0 & 11.3 \\
+	\end{pmatrix},\text{  }
+	y = \begin{pmatrix}
+		1.1 \\
+		2.5 \\
+		2.2 \\
+		4 \\
+		1
+	\end{pmatrix}
+	\]
+	
+	В процессе решения используйте калькулятор, все числа округляйте до сотых.
+	
+	\begin{enumerate}
+		\item Найдите $\hat{\beta_0}$, $\hat{\beta_1}$, $\hat{\beta_2}$.
+		\item Найдите $\hat{y}$.
+		\item Найдите TSS, ESS, RSS и $R^2$.
+		\item Найдите $\hat{\sigma}$.
+		\item Найдите $\widehat{\Var}(\hat{\beta})$.
+		\item На уровне значимости $5\%$ проверьте гипотезу
+		\[
+		\begin{cases}
+			H_0: \beta_1 = 1, \\
+			H_1: \beta_1 \ne 1.
+		\end{cases}
+		\]
+		\item На уровне значимости $10\%$ проверьте гипотезу
+		\[
+		\begin{cases}
+			H_0: \beta_2 = 1, \\
+			H_1: \beta_2 < 1.
+		\end{cases}
+		\]
+		\item Проверьте регрессию на значимость в целом.
+		\item На уровне значимости 5\% проверьте гипотезу
+		\[
+		\begin{cases}
+			H_0: \beta_1 = \beta_2, \\
+			H_1: \beta_1 \ne \beta_2.
+		\end{cases}
+		\]
+		\item Постройте $95\%$-ый доверительный интервал для $\beta_1$.
+		\item Пусть $x_{1, 6} = 10$, $x_{2, 6} = 7$. Найдите $\hat{y}_6$.
+		\item Постройте $95\%$-ый доверительный интервал для $\E(y_6 | x_{1, 6}, x_{2, 6})$.
+	\end{enumerate}
+
+\newpage	
+{\Large \textbf{Задача X$^{\dagger}$.} Методы моментов и первого шага}
+
+Альтернативой методу максимального правдоподобия является \textit{метод моментов}, суть которого заключается в том, чтобы приравнять теоретические моменты как функции от оцениваемых параметров к их выборочным аналогам, и из полученной системы найти оценки.
+
+\begin{enumerate}
+	\item Пункт для тренировки. Рассмотрим выборку $X_1$, $X_2$, $X_3$ $\sim$ $i.i.d.$ $\mathcal{N}(\mu, 1)$. Оказалось, что $X_1 = 1$, $X_2 = 2$, $X_3 = 3$. Найдите $\hat{\E}(X_1)_{MM}$.
+	
+	\item \textbf{(6 баллов)} Исследователь Матвей подбрасывает монетку с вероятностью орла $p$ до тех пор, пока не выпадет два орла (всего, не обязательно подряд). Оказалось, что среднее число ходов, за которое завершится игра, равно 40. Найдите $\hat{p}_{MM}$.
+	
+	\textit{Подсказка:} докажите, что если $M$ – число ходов, за которое завершится игра, то $\E(M) = \frac{2}{p}$.
+\end{enumerate}
+
+{\Large \textbf{Задача Y$^{\dagger}$.} Известное неравенство}
+
+\textbf{(6 баллов)} 
+
+Рассмотрим линейную модель
+\[
+y_i = \beta_0 + \beta_1X_i + \beta_2Z_i + u_i,
+\]
+
+где $u_i \sim \mathcal{N}(0, 1)$, а все предпосылки ТГМ выполнены. Исследователь Вадим тестирует гипотезу вида
+\[\begin{cases}
+	H_0: \beta_1 = C \\
+	H_A: \beta_1 \ne C,
+\end{cases}
+\]
+где $C$ – некоторая константа, при помощи тестов $LR$, $LM$ и $W$. Докажите, что в такой постановке всегда верно, что $LM \le LR \le W$. 
+	
+\end{document}
