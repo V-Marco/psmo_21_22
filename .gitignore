@@ -1,3 +1,16 @@
+# tex
+*.aux
+*.log
+*.bbl
+*.blg
+*.bcf
+*.fls
+*.out
+*.fdb_latexmk
+*.run.xml
+*.synctex.gz
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
