@@ -1,0 +1,17 @@
+\documentclass[border=2pt]{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[
+        axis lines = left, % привычные оси со стрелочками с пересечением в нуле
+        % возможные значения: box, left, middle, center, right, none
+        xlabel = {$x$}, % подпись оси x
+        ylabel = {$f(x)$}, % подпись оси y
+        title={$\ell(x|\theta)$}, 
+    ]
+        \addplot[domain=-8:4, samples=100, color=red] {-x^4 - 5*x^3 - 2*x};
+        \addplot[domain=-8:1, samples=100, color=blue] {-20*(x+3.5)^2-(x+3.5)^8/100 -200};
+    \end{axis}
+\end{tikzpicture}
+\end{document}

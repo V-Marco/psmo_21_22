@@ -1,4 +1,5 @@
 # tex
+*.xdv
 *.aux
 *.log
 *.bbl
